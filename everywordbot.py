@@ -35,7 +35,7 @@ class EverywordBot(object):
 	def post(self):
 		index = self._get_current_index()
 		status_str = self._get_current_line(index)
-		self.twitter.update_status(status_str)
+		self.twitter.update_status(status=status_str)
 		self._increment_index(index)
 
 if __name__ == '__main__':
