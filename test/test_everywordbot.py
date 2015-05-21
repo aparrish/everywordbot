@@ -15,7 +15,7 @@ from everywordbot import EverywordBot
 
 class TestIt(unittest.TestCase):
 
-    def test_3sentiljoonaa(self):
+    def test__get_current_line(self):
         # Arrange
         bot = EverywordBot("consumer_key", "consumer_secret",
                            "access_token", "token_secret",
@@ -27,6 +27,31 @@ class TestIt(unittest.TestCase):
 
         # Assert
         self.assertEqual(line, "word2")
+
+    def test__get_current_index_file_not_exist(self):
+        # Arrange
+        bot = EverywordBot("consumer_key", "consumer_secret",
+                           "access_token", "token_secret",
+                           "_source_file", "no_index_file")
+
+        # Act
+        index = bot._get_current_index()
+
+        # Assert
+        self.assertEqual(index, 0)
+
+    def test__increment_index(self):
+        # Arrange
+        bot = EverywordBot("consumer_key", "consumer_secret",
+                           "access_token", "token_secret",
+                           "_source_file", "test/test_index.txt")
+
+        # Act
+        bot._increment_index(0)
+
+        # Assert
+        index = bot._get_current_index()
+        self.assertEqual(index, 1)
 
 
 if __name__ == '__main__':
