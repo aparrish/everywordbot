@@ -13,6 +13,10 @@ sys.path.append(
 from everywordbot import EverywordBot
 
 
+def stub_twitter_update_status(status):
+    pass
+
+
 class TestIt(unittest.TestCase):
 
     def test__get_current_line(self):
@@ -52,6 +56,21 @@ class TestIt(unittest.TestCase):
         # Assert
         index = bot._get_current_index()
         self.assertEqual(index, 1)
+
+    def test__post(self):
+        # Arrange
+        bot = EverywordBot("consumer_key", "consumer_secret",
+                           "access_token", "token_secret",
+                           "test/test_source.txt", "test/test_index.txt")
+        bot.twitter.update_status = stub_twitter_update_status
+        index_before = bot._get_current_index()
+
+        # Act
+        bot.post()
+
+        # Assert
+        index_after = bot._get_current_index()
+        self.assertEqual(index_before + 1, index_after)
 
 
 if __name__ == '__main__':
