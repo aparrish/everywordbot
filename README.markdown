@@ -4,7 +4,7 @@ Everyword Bot
 This is a small Python script that implements an [`@everyword`](http://twitter.com/everyword)-like Twitter bot. Here's what you'll need to run it:
 
 * Python 2.6+
-* [tweepy](http://tweepy.github.com/)
+* [Tweepy](http://www.tweepy.org/)
 * a plain text file, with each of your desired tweets on one line
 
 Instructions
