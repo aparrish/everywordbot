@@ -30,8 +30,8 @@ class EverywordBot(object):
         with open(self.source_file_name) as source_fh:
             # read up until the desired line
             for i in range(index+1):
-                status_str = source_fh.readline().strip()
-            return status_str
+                status_str = source_fh.readline()
+            return status_str.strip()
 
     def post(self):
         index = self._get_current_index()
