@@ -13,7 +13,7 @@ sys.path.append(
 from everywordbot import EverywordBot
 
 
-def stub_twitter_update_status(status):
+def stub_twitter_update_status(status, lat=None, long=None, place_id=None):
     pass
 
 
