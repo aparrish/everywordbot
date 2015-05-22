@@ -28,10 +28,11 @@ class EverywordBot(object):
 
     def _get_current_line(self, index):
         with open(self.source_file_name) as source_fh:
-            # read up until the desired line
-            for i in range(index+1):
-                status_str = source_fh.readline().strip()
-            return status_str
+            # read the desired line
+            for i, status_str in enumerate(source_fh):
+                if i == index:
+                    break
+            return status_str.strip()
 
     def post(self):
         index = self._get_current_index()
