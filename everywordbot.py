@@ -6,9 +6,13 @@ class EverywordBot(object):
 
     def __init__(self, consumer_key, consumer_secret,
                  access_token, token_secret,
-                 source_file_name, index_file_name):
+                 source_file_name, index_file_name,
+                 lat=None, long=None, place_id=None):
         self.source_file_name = source_file_name
         self.index_file_name = index_file_name
+        self.lat = lat
+        self.long = long
+        self.place_id = place_id
 
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
@@ -37,7 +41,9 @@ class EverywordBot(object):
     def post(self):
         index = self._get_current_index()
         status_str = self._get_current_line(index)
-        self.twitter.update_status(status=status_str)
+        self.twitter.update_status(status=status_str,
+                                   lat=self.lat, long=self.long,
+                                   place_id=self.place_id)
         self._increment_index(index)
 
 if __name__ == '__main__':
@@ -57,10 +63,17 @@ if __name__ == '__main__':
     parser.add_option('--index_file', dest='index_file',
                       default="index",
                       help="index file (must be able to write to this file)")
+    parser.add_option('--lat', dest='lat',
+                      help="The latitude for tweets")
+    parser.add_option('--long', dest='long',
+                      help="The longitude for tweets")
+    parser.add_option('--place_id', dest='place_id',
+                      help="Twitter ID of location for tweets")
     (options, args) = parser.parse_args()
 
     bot = EverywordBot(options.consumer_key, options.consumer_secret,
                        options.access_token, options.token_secret,
-                       options.source_file, options.index_file)
+                       options.source_file, options.index_file,
+                       options.lat, options.long, options.place_id)
 
     bot.post()
