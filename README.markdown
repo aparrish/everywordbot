@@ -1,6 +1,8 @@
 Everyword Bot
 -------------
 
+[![Build Status](https://travis-ci.org/aparrish/everywordbot.svg)](https://travis-ci.org/aparrish/everywordbot)
+
 This is a small Python script that implements an [`@everyword`](http://twitter.com/everyword)-like Twitter bot. Here's what you'll need to run it:
 
 * Python 2.6+
