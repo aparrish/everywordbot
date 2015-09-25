@@ -7,12 +7,15 @@ class EverywordBot(object):
     def __init__(self, consumer_key, consumer_secret,
                  access_token, token_secret,
                  source_file_name, index_file_name,
-                 lat=None, long=None, place_id=None):
+                 lat=None, long=None, place_id=None,
+                 prefix=None, suffix=None):
         self.source_file_name = source_file_name
         self.index_file_name = index_file_name
         self.lat = lat
         self.long = long
         self.place_id = place_id
+        self.prefix = prefix
+        self.suffix = suffix
 
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
@@ -41,6 +44,10 @@ class EverywordBot(object):
     def post(self):
         index = self._get_current_index()
         status_str = self._get_current_line(index)
+        if self.prefix:
+            status_str = self.prefix + status_str
+        if self.suffix:
+            status_str = status_str + self.suffix
         self.twitter.update_status(status=status_str,
                                    lat=self.lat, long=self.long,
                                    place_id=self.place_id)
@@ -69,11 +76,16 @@ if __name__ == '__main__':
                       help="The longitude for tweets")
     parser.add_option('--place_id', dest='place_id',
                       help="Twitter ID of location for tweets")
+    parser.add_option('--prefix', dest='prefix',
+                      help="string to add to the beginning of each post (if you want a space, include a space)")
+    parser.add_option('--suffix', dest='suffix',
+                      help="string to add to the end of each post (if you want a space, include a space)")
     (options, args) = parser.parse_args()
 
     bot = EverywordBot(options.consumer_key, options.consumer_secret,
                        options.access_token, options.token_secret,
                        options.source_file, options.index_file,
-                       options.lat, options.long, options.place_id)
+                       options.lat, options.long, options.place_id,
+                       options.prefix, options.suffix)
 
     bot.post()
