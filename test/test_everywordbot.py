@@ -20,7 +20,8 @@ class TwitterStub(object):
         self.long = None
         self.place_id = None
 
-    def twitter_update_status(self, status, lat=None, long=None, place_id=None):
+    def twitter_update_status(self, status, lat=None, long=None,
+                              place_id=None):
         self.status = status
         self.lat = lat
         self.long = long

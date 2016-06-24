@@ -77,9 +77,11 @@ if __name__ == '__main__':
     parser.add_option('--place_id', dest='place_id',
                       help="Twitter ID of location for tweets")
     parser.add_option('--prefix', dest='prefix',
-                      help="string to add to the beginning of each post (if you want a space, include a space)")
+                      help="string to add to the beginning of each post "
+                           "(if you want a space, include a space)")
     parser.add_option('--suffix', dest='suffix',
-                      help="string to add to the end of each post (if you want a space, include a space)")
+                      help="string to add to the end of each post "
+                           "(if you want a space, include a space)")
     (options, args) = parser.parse_args()
 
     bot = EverywordBot(options.consumer_key, options.consumer_secret,
