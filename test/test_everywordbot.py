@@ -10,7 +10,7 @@ import sys
 sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from everywordbot import EverywordBot
+from everywordbot import EverywordBot, _csv_to_float_list
 
 
 class TwitterStub(object):
@@ -19,13 +19,15 @@ class TwitterStub(object):
         self.lat = None
         self.long = None
         self.place_id = None
+        self.bbox = None
 
     def twitter_update_status(self, status, lat=None, long=None,
-                              place_id=None):
+                              place_id=None, bbox=None):
         self.status = status
         self.lat = lat
         self.long = long
         self.place_id = place_id
+        self.bbox = bbox
 
 
 class TestIt(unittest.TestCase):
@@ -131,6 +133,53 @@ class TestIt(unittest.TestCase):
 
         # Assert
         self.assertEqual(stub.status, "apple-word-zucchini")
+
+    def test__random_point_in(self):
+        # Arrange
+        bbox = [59.811225, 20.623165, 70.07531, 31.569525]
+        bot = EverywordBot("consumer_key", "consumer_secret",
+                           "access_token", "token_secret",
+                           "test/test_source.txt", "index_file")
+
+        # Act
+        lat, long = bot._random_point_in(bbox)
+
+        # Assert
+        self.assertTrue(bbox[0] <= lat <= bbox[2])
+        self.assertTrue(bbox[1] <= long <= bbox[3])
+
+    def test_use_bbox_instead_of_lat_long(self):
+        # Arrange
+        lat = 1
+        long = 2
+        bbox = [59.811225, 20.623165, 70.07531, 31.569525]
+        bot = EverywordBot("consumer_key", "consumer_secret",
+                           "access_token", "token_secret",
+                           "test/test_source.txt", "index_file",
+                           lat=lat, long=long, bbox=bbox)
+        bot._get_current_line = lambda index: "word"
+        stub = TwitterStub()
+        bot.twitter.update_status = stub.twitter_update_status
+
+        # Act
+        bot.post()
+
+        # Assert
+        self.assertNotEqual(stub.lat, 1)
+        self.assertNotEqual(stub.long, 2)
+        self.assertTrue(bbox[0] <= stub.lat <= bbox[2])
+        self.assertTrue(bbox[1] <= stub.long <= bbox[3])
+
+    def test__csv_to_float_list(self):
+        # Arrange
+        csv = "59.811225,20.623165,70.07531,31.569525"
+
+        # Act
+        float_list = _csv_to_float_list(csv)
+
+        # Assert
+        self.assertEqual(float_list,
+                         [59.811225, 20.623165, 70.07531, 31.569525])
 
 
 if __name__ == '__main__':
