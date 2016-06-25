@@ -67,7 +67,7 @@ class EverywordBot(object):
 
 
 def _csv_to_float_list(csv):
-    return map(float, csv.split(','))
+    return list(map(float, csv.split(',')))
 
 
 if __name__ == '__main__':
