@@ -62,7 +62,9 @@ class EverywordBot(object):
         if self.bbox:
             self.lat, self.long = self._random_point_in(self.bbox)
 
-        if not self.dry_run:
+        if self.dry_run:
+            print(status_str)
+        else:
             self.twitter.update_status(status=status_str,
                                        lat=self.lat, long=self.long,
                                        place_id=self.place_id)
