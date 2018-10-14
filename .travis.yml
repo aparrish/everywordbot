@@ -18,7 +18,11 @@ matrix:
 sudo: false
 
 install:
- - pip install coverage tweepy
+ # Workaround https://github.com/tweepy/tweepy/issues/1063
+ - if [[ $TRAVIS_PYTHON_VERSION != 3.7 ]]; then pip install tweepy; fi
+ - if [[ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then pip install -U git+https://github.com/tweepy/tweepy.git; fi
+
+ - pip install coverage
 
 script:
  - coverage run --source=everywordbot test/test_everywordbot.py -v
