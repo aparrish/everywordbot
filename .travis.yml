@@ -1,14 +1,19 @@
 language: python
 
-python:
- - pypy
- - pypy3
- - 2.7
- - 3.6
- - 3.5
- - 3.4
- - 3.3
- - 2.6
+matrix:
+  fast_finish: true
+  include:
+    - python: pypy
+    - python: pypy3
+    - python: 3.7
+      dist: xenial
+      sudo: true
+    - python: 3.6
+    - python: 3.5
+    - python: 3.4
+    - python: 3.3
+    - python: 2.7
+    - python: 2.6
 
 sudo: false
 
@@ -27,6 +32,3 @@ after_script:
  - pip install pep8 pyflakes
  - pep8 --statistics --count .
  - pyflakes . | tee >(wc -l)
-
-matrix:
-  fast_finish: true
