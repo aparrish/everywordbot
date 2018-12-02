@@ -181,6 +181,23 @@ class TestIt(unittest.TestCase):
         self.assertEqual(float_list,
                          [59.811225, 20.623165, 70.07531, 31.569525])
 
+    def test__dry_run(self):
+        # Arrange
+        bot = EverywordBot("consumer_key", "consumer_secret",
+                           "access_token", "token_secret",
+                           "test/test_source.txt", "test/test_index.txt",
+                           dry_run=True)
+        stub = TwitterStub()
+        bot.twitter.update_status = stub.twitter_update_status
+        index_before = bot._get_current_index()
+
+        # Act
+        bot.post()
+
+        # Assert
+        index_after = bot._get_current_index()
+        self.assertEqual(index_before, index_after)
+
 
 if __name__ == '__main__':
     unittest.main()
