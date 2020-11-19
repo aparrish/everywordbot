@@ -115,7 +115,7 @@ if __name__ == '__main__':
                       help="string to add to the end of each post "
                            "(if you want a space, include a space)")
     parser.add_option('-n', '--dry_run', dest='dry_run', action='store_true',
-                      help="Do everything except actually send the tweet or"
+                      help="Do everything except actually send the tweet or "
                            "update the index file")
     (options, args) = parser.parse_args()
 
