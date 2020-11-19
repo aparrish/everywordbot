@@ -52,11 +52,11 @@ class TestIt(unittest.TestCase):
                            "test/test_source.txt", "index_file")
         index = 3
 
-        # Act
-        line = bot._get_current_line(index)
+        # Act / Assert
+        with self.assertRaises(EOFError) as context:
+            bot._get_current_line(index)
 
-        # Assert
-        self.assertEqual(line, "word3")
+        self.assertIn("No more words", str(context.exception))
 
     def test__get_current_index_file_not_exist(self):
         # Arrange

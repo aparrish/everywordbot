@@ -37,11 +37,15 @@ class EverywordBot(object):
             index_fh.close()
 
     def _get_current_line(self, index):
+        found = False
         with open(self.source_file_name) as source_fh:
             # read the desired line
             for i, status_str in enumerate(source_fh):
                 if i == index:
+                    found = True
                     break
+            if not found:
+                raise EOFError("No more words")
             return status_str.strip()
 
     def _random_point_in(self, bbox):
