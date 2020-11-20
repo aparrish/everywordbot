@@ -45,6 +45,19 @@ class TestIt(unittest.TestCase):
         # Assert
         self.assertEqual(line, "word2")
 
+    def test__get_current_line_no_more_words(self):
+        # Arrange
+        bot = EverywordBot("consumer_key", "consumer_secret",
+                           "access_token", "token_secret",
+                           "test/test_source.txt", "index_file")
+        index = 3
+
+        # Act / Assert
+        with self.assertRaises(EOFError) as context:
+            bot._get_current_line(index)
+
+        self.assertIn("No more words", str(context.exception))
+
     def test__get_current_index_file_not_exist(self):
         # Arrange
         bot = EverywordBot("consumer_key", "consumer_secret",
